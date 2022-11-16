@@ -30,9 +30,9 @@ jobs:
         id: tag-version
       - run: |
           echo ${{ steps.package-version.outputs.current-version }}
-          echo ${{ steps.tag-version.git_tag_version }}
+          echo ${{ steps.tag-version.outputs.git_tag_version }}
       - name: Version correctly set check
-        if: ${{ steps.package-version.outputs.current-version }} != ${{ steps.tag-version.git_tag_version }}
+        if: ${{ steps.package-version.outputs.current-version }} != ${{ steps.tag-version.outputs.git_tag_version }}
         uses: actions/github-script@v6
         with:
           script: |
