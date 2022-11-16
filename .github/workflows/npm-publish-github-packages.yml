@@ -1,7 +1,7 @@
 # This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
 # For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
 
-name: publish npm package
+name: Node.js Package
 
 on:
   push:
@@ -11,7 +11,9 @@ defaults:
   run:
     working-directory: npm-package
 
+
 jobs:
+
   check-version-tag:
     runs-on: ubuntu-latest
     steps:
@@ -21,8 +23,11 @@ jobs:
         uses: martinbeentjes/npm-get-version-action@main
         with:
           path: npm-package
+      - run: echo ${{ steps.package-version.outputs.current-version }}
+      - run: echo "git_tag_version=${GITHUB_REF#*_}" >> $GITHUB_OUTPUT
+        id: tag-version
       - name: Version correctly set check
-        if: ${{ steps.package-version.outputs.current-version }} != ${{ GITHUB_REF#*_ }}
+        if: ${{ steps.package-version.outputs.current-version }} != ${{ steps.tag-version.git_tag_version }}
         uses: actions/github-script@v3
         with:
           script: |
