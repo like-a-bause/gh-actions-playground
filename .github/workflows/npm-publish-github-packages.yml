@@ -25,7 +25,7 @@ jobs:
           path: npm-package
       - run: echo ${{ steps.package-version.outputs.current-version}}
       - run: echo $GITHUB_REF
-      - run: echo ${GITHUB_REF:11}
+      - run: echo ${GITHUB_REF#*_}
 
   build:
     needs: check-version-tag
