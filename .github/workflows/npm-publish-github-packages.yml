@@ -28,6 +28,9 @@ jobs:
       - run:  echo git_tag_version=${GITHUB_REF#*_}
       - run: echo git_tag_version=${GITHUB_REF#*_} >> $GITHUB_OUTPUT
         id: tag-version
+      - run: |
+          echo ${{ steps.package-version.outputs.current-version }}
+          echo ${{ steps.tag-version.git_tag_version }}
       - name: Version correctly set check
         if: ${{ steps.package-version.outputs.current-version }} != ${{ steps.tag-version.git_tag_version }}
         uses: actions/github-script@v6
