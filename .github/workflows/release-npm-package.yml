@@ -1,32 +1,26 @@
+name: Release npm-package
 on:
   workflow_dispatch:
     inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-        type: choice
-        options:
-          - info
-          - warning
-          - debug
-      print_tags:
-        description: 'True to print to STDOUT'
-        required: true
-        type: boolean
-      tags:
-        description: 'Test scenario tags'
+      version:
+        description: 'The new version tag'
         required: true
         type: string
-      environment:
-        description: 'Environment to run tests against'
-        type: environment
-        required: true
+  defaults:
+    run:
+      working-directory: npm-package
 
 jobs:
-  print-tag:
+  print-version:
     runs-on: ubuntu-latest
-    if:  ${{ inputs.print_tags }}
     steps:
-      - name: Print the input tag to STDOUT
-        run: echo  The tags are ${{ inputs.tags }}
+      - uses: actions/checkout@v3
+      - name: Print the version to STDOUT
+        run: echo  The version you want to release is ${{ inputs.version }}
+      - name: Set the version in package.json
+        run: npm version ${{ inputs.version }}
+      - name: Push scoped tag
+        run: |
+          git commit -am "release: Release new version"
+          git tag npm-package_${{ inputs.version }}
+          git push origin npm-package_${{ inputs.version }}

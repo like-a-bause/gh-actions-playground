@@ -7,6 +7,7 @@ on:
   push:
     tags:
       - 'npm-package_*' # Push events to matching npm-package_*, i.e. npm-package_1.0, npm-package_20.15.10
+
 defaults:
   run:
     working-directory: npm-package
