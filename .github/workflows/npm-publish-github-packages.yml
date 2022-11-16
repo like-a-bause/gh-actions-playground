@@ -11,9 +11,7 @@ defaults:
   run:
     working-directory: npm-package
 
-
 jobs:
-
   check-version-tag:
     runs-on: ubuntu-latest
     steps:
@@ -23,14 +21,8 @@ jobs:
         uses: martinbeentjes/npm-get-version-action@main
         with:
           path: npm-package
-      - run: echo ${{ steps.package-version.outputs.current-version }}
-      - run:  echo "git_tag_version=${GITHUB_REF#*_}"
-      - run:  echo git_tag_version=${GITHUB_REF#*_}
       - run: echo git_tag_version=${GITHUB_REF#*_} >> $GITHUB_OUTPUT
         id: tag-version
-      - run: |
-          echo ${{ steps.package-version.outputs.current-version }}
-          echo ${{ steps.tag-version.outputs.git_tag_version }}
       - name: Version correctly set check
         if: ${{ steps.package-version.outputs.current-version }} != ${{ steps.tag-version.outputs.git_tag_version }}
         uses: actions/github-script@v6
