@@ -22,7 +22,9 @@ jobs:
         uses: martinbeentjes/npm-get-version-action@main
         with:
           path: npm-package
-      - run: echo $GITHUB_REF | cut -f3 -d'@' >> $GITHUB_OUTPUT
+      - run: |
+          version=$(echo $GITHUB_REF | cut -f3 -d'@')
+          echo "git_tag_version=$version" >> $GITHUB_OUTPUT
         id: tag-version
       - run: echo ${{ steps.tag-version.outputs.git_tag_version }}
       - name: Version correctly set check
