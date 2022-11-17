@@ -23,7 +23,7 @@ jobs:
         run: |
           git config --global user.name 'CI Workflow'
           git config --global user.email 'automated-release@users.noreply.github.com'
-          git commit -am "release: Release new version"
+          git commit -am "release: Release version ${{ inputs.version }}"
           git tag npm-package_${{ inputs.version }}
           git push
           git push origin npm-package_${{ inputs.version }}

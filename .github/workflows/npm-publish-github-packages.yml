@@ -6,7 +6,7 @@ name: Node.js Package
 on:
   push:
     tags:
-      - 'npm-package_*' # Push events to matching npm-package_*, i.e. npm-package_1.0, npm-package_20.15.10
+      - '@teamhanko/npm-package@*' # Push events to matching npm-package_*, i.e. npm-package_1.0, npm-package_20.15.10
 
 defaults:
   run:
@@ -22,8 +22,9 @@ jobs:
         uses: martinbeentjes/npm-get-version-action@main
         with:
           path: npm-package
-      - run: echo "git_tag_version=${GITHUB_REF#*_}" >> $GITHUB_OUTPUT
+      - run: echo $GITHUB_REF | cut -f3 -d'@' >> $GITHUB_OUTPUT
         id: tag-version
+      - run: echo ${{ steps.tag-version.outputs.git_tag_version }}
       - name: Version correctly set check
         if: steps.package-version.outputs.current-version != steps.tag-version.outputs.git_tag_version
         uses: actions/github-script@v6
