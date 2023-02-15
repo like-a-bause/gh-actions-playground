@@ -72,10 +72,8 @@ jobs:
       - name: Remove prefix from tags
         outputs:
           tags_without_prefix: ${{ steps.rpfs.outputs.tags_without_prefix }}
-        steps:
-          - name: Remove prefix from tags
-            id: rpfs
-            run: |
+        id: rpfs
+        run: |
               export TAGS=$(echo ${{ steps.meta.outputs.tags }} | sed 's/backend\///g')
               echo ::set-output name=tags_without_prefix::${ TAGS }
 
