@@ -70,12 +70,9 @@ jobs:
             type=ref,event=pr
 
       - name: Remove prefix from tags
-        outputs:
-          tags_without_prefix: ${{ steps.rpfs.outputs.tags_without_prefix }}
-        id: rpfs
         run: |
-              export TAGS=$(echo ${{ steps.meta.outputs.tags }} | sed 's/backend\///g')
-              echo ::set-output name=tags_without_prefix::${ TAGS }
+          export TAGS=$(echo ${{ steps.meta.outputs.tags }} | sed 's/backend\///g')
+          echo "::set-env name=TAGS::$TAGS"
 
 
       # Build and push Docker image with Buildx (don't push on PR)
@@ -88,5 +85,5 @@ jobs:
           context: ${{ matrix.context }}
           file: ${{ matrix.context }}/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.remove-prefix-from-tags.outputs.tags_without_prefix }}
+          tags: ${{ env.TAGS }}
           labels: ${{ steps.meta.outputs.labels }}
