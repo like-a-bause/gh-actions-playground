@@ -72,7 +72,7 @@ jobs:
       - name: Remove prefix from tags
         outputs:
           tags_without_prefix: ${{ steps.rpfs.outputs.tags_without_prefix }}
-        teps:
+        steps:
           - name: Remove prefix from tags
             id: rpfs
             run: |
