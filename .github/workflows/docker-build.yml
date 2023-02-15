@@ -80,5 +80,5 @@ jobs:
           context: ${{ matrix.context }}
           file: ${{ matrix.context }}/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.tags }}
+          tags: ${{ steps.meta.output.tags }}
           labels: ${{ steps.meta.outputs.labels }}
